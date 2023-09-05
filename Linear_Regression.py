@@ -3,11 +3,11 @@ import math
 import numpy as np
 import tkinter as tk
 from scipy.stats import chi2
-from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
+import customtkinter as ctk
 
 
-root = tk.Tk()
+root = ctk.CTk()
 root.title("Linear Regression by zSuperDam")
 
 def drawplot(X, Y, S, m, q, Assex, Assey):
@@ -131,10 +131,7 @@ def button_clicked():
 		Xm = '<'
 	else:
 		Xm = '>'
-	
-	
-	
-	
+
 	#OUTPUT on screen
 	sigmapostl = tk.Entry(root)
 	ml = tk.Entry(root)
@@ -153,12 +150,12 @@ def button_clicked():
 	chil.grid(row=10, column=0, padx=5, pady=5)
 
 	
-	sigmapostl.insert(0, round(sigmapost,8))
+	sigmapostl.insert(0, str(round(sigmapost,8)))
 	ml.insert(0, "{} ± {}".format(round(m, 8), round(sigmam, 8)))
 	ql.insert(0, "{} ± {}".format(round(q, 8), round(sigmaq, 8)))
-	rhol.insert(0, round(rho, 10))
-	rhosql.insert(0, round(rho ** 2, 10))
-	tl.insert(0, t)
+	rhol.insert(0, str(round(rho, 10)))
+	rhosql.insert(0, str(round(rho ** 2, 10)))
+	tl.insert(0, str(t))
 	chil.insert(0, "Xth-Xsp: {}{}{}".format(round(chi2t,3),Xm,round(chi2s,3)))
 		
 	
@@ -190,32 +187,32 @@ def button_clicked():
 	
 #TKINTER
 
-# definiamo una griglia con tre colonne
+#griglia 3 colonne
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=1)
 
-tk.Label(root, text="X").grid(row=0, column=0, padx=5, pady=5)
-tk.Label(root, text="Y").grid(row=0, column=1, padx=5, pady=5)
-tk.Label(root, text="Sigma Y").grid(row=0, column=2, padx=5, pady=5)
-tk.Label(root, text="Use priori error (y,n)").grid(row=2, column=0, padx=5, pady=5)
-tk.Label(root, text="Confidence level (ex 0.95)").grid(row=3, column=0, padx=5, pady=5)
-tk.Label(root, text="Import from file? (y,n)").grid(row=4, column=0, padx=5, pady=5)
-tk.Label(root, text="Axes names:").grid(row=5, column=0, padx=5, pady=5)
+ctk.CTkLabel(root, text="X").grid(row=0, column=0, padx=5, pady=5)
+ctk.CTkLabel(root, text="Y").grid(row=0, column=1, padx=5, pady=5)
+ctk.CTkLabel(root, text="Sigma Y").grid(row=0, column=2, padx=5, pady=5)
+ctk.CTkLabel(root, text="Use priori error (y,n)").grid(row=2, column=0, padx=5, pady=5)
+ctk.CTkLabel(root, text="Confidence level").grid(row=3, column=0, padx=5, pady=5)
+ctk.CTkLabel(root, text="Import from file? (y,n)").grid(row=4, column=0, padx=5, pady=5)
+ctk.CTkLabel(root, text="Axes names:").grid(row=5, column=0, padx=5, pady=5)
 
 
-# creiamo tre entry per inserire del testo
-Xinput = tk.Text(root, height=20, width=30)
-Yinput = tk.Text(root, height=20, width=30)
-Sinput = tk.Text(root, height=20, width=30)
-Spriori = tk.Entry(root)
-CLinput = tk.Entry(root)
-FromF = tk.Entry(root)
-Assex = tk.Entry(root)
-Assey = tk.Entry(root)
+#entry per inserire del testo
+Xinput = ctk.CTkTextbox(root, height=320, width=250)
+Yinput = ctk.CTkTextbox(root, height=320, width=250)
+Sinput = ctk.CTkTextbox(root, height=320, width=250)
+Spriori = ctk.CTkEntry(root)
+CLinput = ctk.CTkEntry(root)
+FromF = ctk.CTkEntry(root)
+Assex = ctk.CTkEntry(root)
+Assey = ctk.CTkEntry(root)
 
 
-# posizioniamo le entry nella griglia
+#entry nella griglia
 Xinput.grid(row=1, column=0, padx=5, pady=5)
 Yinput.grid(row=1, column=1, padx=5, pady=5)
 Sinput.grid(row=1, column=2, padx=5, pady=5)
@@ -231,10 +228,10 @@ FromF.insert(0, "n")
 Assex.insert(0, "X axis")
 Assey.insert(0, "Y axis")
 
-# bottone
-button = tk.Button(root, text="Evaluate", command=button_clicked)
+#bottone
+button = ctk.CTkButton(master = root, text="Evaluate", command=button_clicked)
 
-# posizioniamo il bottone al centro della griglia
+#bottone al centro della griglia
 button.grid(row=2, column=2, padx=5, pady=5)
 
 root.mainloop()
