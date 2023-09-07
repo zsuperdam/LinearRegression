@@ -1,14 +1,25 @@
 #MADE by zSuperDam (zsuperdam@gmail.com for reporting any problem)
+#Special thanks to Dj Jenrico
+
+#############################################################
+#	     _____                      ______                  #
+#	    /  ___|                     |  _  \                 #
+#	 ___\ `--. _   _ _ __   ___ _ __| | | |__ _ _ __ ___    #
+#	|_  /`--. \ | | | '_ \ / _ \ '__| | | / _` | '_ ` _ \   #
+#	 / //\__/ / |_| | |_) |  __/ |  | |/ / (_| | | | | | |  #
+#	/___\____/ \__,_| .__/ \___|_|  |___/ \__,_|_| |_| |_|  #
+#	                | |                                     #
+#	                |_|                                   	#
+#############################################################
+
 import math
 import numpy as np
-import tkinter as tk
 from scipy.stats import chi2
 import matplotlib.pyplot as plt
 import customtkinter as ctk
 
-
 root = ctk.CTk()
-root.title("Linear Regression by zSuperDam")
+root.title("Linear Regression v1.0")
 
 def drawplot(X, Y, S, m, q, Assex, Assey):
 	obj1 = plt.errorbar(X, Y, yerr=S, fmt='o')
@@ -38,11 +49,9 @@ def media(dati):
 
 def button_clicked():
 	
-	fromfile = FromF.get()
-	
 	S=[]
 	
-	if fromfile == 'n':
+	if ImportFromFileCB.get() == 2:
 		listX = Xinput.get(1.0, 'end')
 		listY = Yinput.get(1.0, 'end')
 		listS = Sinput.get(1.0, 'end')
@@ -83,15 +92,14 @@ def button_clicked():
 	
 	sigmam = []
 	sigmaq = []
-	
-	scelta = Spriori.get()
+
 	confidence = float(CLinput.get())
 	
-	if scelta in ("no", "n"):
+	if PrioriErrorCB.get() == 2:
 		sigmam = math.sqrt(sommaS / delta)
 		sigmaq = math.sqrt(sommaX2 / delta)
 
-	elif scelta in ("si", "sì", "y"):
+	elif PrioriErrorCB.get() == 1:
 		sommaX = 0
 		sommaX2 = 0
 		for i in range(len(X)):
@@ -133,13 +141,13 @@ def button_clicked():
 		Xm = '>'
 
 	#OUTPUT on screen
-	sigmapostl = tk.Entry(root)
-	ml = tk.Entry(root)
-	ql = tk.Entry(root)
-	rhol = tk.Entry(root)
-	tl = tk.Entry(root)
-	chil = tk.Entry(root)
-	rhosql = tk.Entry(root)
+	sigmapostl = ctk.CTkEntry(root)
+	ml = ctk.CTkEntry(root)
+	ql = ctk.CTkEntry(root)
+	rhol = ctk.CTkEntry(root)
+	tl = ctk.CTkEntry(root)
+	chil = ctk.CTkEntry(root)
+	rhosql = ctk.CTkEntry(root)
 	
 	sigmapostl.grid(row=7, column=0, padx=5, pady=5)
 	ml.grid(row=7, column=1, padx=5, pady=5)
@@ -149,7 +157,7 @@ def button_clicked():
 	tl.grid(row=9, column=2, padx=5, pady=5)
 	chil.grid(row=10, column=0, padx=5, pady=5)
 
-	
+
 	sigmapostl.insert(0, str(round(sigmapost,8)))
 	ml.insert(0, "{} ± {}".format(round(m, 8), round(sigmam, 8)))
 	ql.insert(0, "{} ± {}".format(round(q, 8), round(sigmaq, 8)))
@@ -159,13 +167,13 @@ def button_clicked():
 	chil.insert(0, "Xth-Xsp: {}{}{}".format(round(chi2t,3),Xm,round(chi2s,3)))
 		
 	
-	tk.Label(root, text="Sigma Post:").grid(row=6, column=0, padx=5, pady=5)
-	tk.Label(root, text="m:").grid(row=6, column=1, padx=5, pady=5)
-	tk.Label(root, text="q:").grid(row=6, column=2, padx=5, pady=5)
-	tk.Label(root, text="rho:").grid(row=8, column=0, padx=5, pady=5)
-	tk.Label(root, text="rho^2:").grid(row=8, column=1, padx=5, pady=5)
-	tk.Label(root, text="t:").grid(row=8, column=2, padx=5, pady=5)
-	tk.Label(root, text="DOF: {}".format(len(X)-2)).grid(row=10, column=1, padx=5, pady=5)
+	ctk.CTkLabel(root, text="Sigma Post:").grid(row=6, column=0, padx=5, pady=5)
+	ctk.CTkLabel(root, text="m:").grid(row=6, column=1, padx=5, pady=5)
+	ctk.CTkLabel(root, text="q:").grid(row=6, column=2, padx=5, pady=5)
+	ctk.CTkLabel(root, text="rho:").grid(row=8, column=0, padx=5, pady=5)
+	ctk.CTkLabel(root, text="rho^2:").grid(row=8, column=1, padx=5, pady=5)
+	ctk.CTkLabel(root, text="t:").grid(row=8, column=2, padx=5, pady=5)
+	ctk.CTkLabel(root, text="DOF: {}".format(len(X)-2)).grid(row=10, column=1, padx=5, pady=5)
 	
 	
 	#OUTPUT on file
@@ -195,43 +203,39 @@ root.columnconfigure(2, weight=1)
 ctk.CTkLabel(root, text="X").grid(row=0, column=0, padx=5, pady=5)
 ctk.CTkLabel(root, text="Y").grid(row=0, column=1, padx=5, pady=5)
 ctk.CTkLabel(root, text="Sigma Y").grid(row=0, column=2, padx=5, pady=5)
-ctk.CTkLabel(root, text="Use priori error (y,n)").grid(row=2, column=0, padx=5, pady=5)
-ctk.CTkLabel(root, text="Confidence level").grid(row=3, column=0, padx=5, pady=5)
-ctk.CTkLabel(root, text="Import from file? (y,n)").grid(row=4, column=0, padx=5, pady=5)
-ctk.CTkLabel(root, text="Axes names:").grid(row=5, column=0, padx=5, pady=5)
-
 
 #entry per inserire del testo
 Xinput = ctk.CTkTextbox(root, height=320, width=250)
 Yinput = ctk.CTkTextbox(root, height=320, width=250)
 Sinput = ctk.CTkTextbox(root, height=320, width=250)
-Spriori = ctk.CTkEntry(root)
 CLinput = ctk.CTkEntry(root)
-FromF = ctk.CTkEntry(root)
 Assex = ctk.CTkEntry(root)
 Assey = ctk.CTkEntry(root)
+PrioriErrorCB = ctk.CTkCheckBox(root, text="Use priori error", onvalue=1, offvalue=2)
+ImportFromFileCB = ctk.CTkCheckBox(root, text="Import from file", onvalue=1, offvalue=2)
+
+
 
 
 #entry nella griglia
 Xinput.grid(row=1, column=0, padx=5, pady=5)
 Yinput.grid(row=1, column=1, padx=5, pady=5)
 Sinput.grid(row=1, column=2, padx=5, pady=5)
-Spriori.grid(row=2, column=1, padx=5, pady=5)
-CLinput.grid(row=3, column=1, padx=5, pady=5)
-FromF.grid(row=4, column=1, padx=5, pady=5)
-Assex.grid(row=5, column=1, padx=5, pady=5)
-Assey.grid(row=5, column=2, padx=5, pady=5)
-
-Spriori.insert(0, "n")
+CLinput.grid(row=2, column=2, padx=5, pady=5)
+Assex.grid(row=5, column=0, padx=5, pady=5)
+Assey.grid(row=5, column=1, padx=5, pady=5)
 CLinput.insert(0, "0.95")
-FromF.insert(0, "n")
 Assex.insert(0, "X axis")
 Assey.insert(0, "Y axis")
+PrioriErrorCB.grid(row=2, column=0)
+ImportFromFileCB.grid(row=2, column=1)
+
+
 
 #bottone
 button = ctk.CTkButton(master = root, text="Evaluate", command=button_clicked)
 
 #bottone al centro della griglia
-button.grid(row=2, column=2, padx=5, pady=5)
+button.grid(row=5, column=2, padx=5, pady=5)
 
 root.mainloop()
